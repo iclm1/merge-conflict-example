@@ -19,15 +19,26 @@ class Restaurante:
         else:
             print("Desculpe, esse item não está no menu.")
 
-    def imprimir_conta(self):
+    def imprimir_fatura(self):
         total = 0
-        print("Conta:")
+        print("Fatura:")
         for pedido in self.pedidos:
             preco_unitario = self.menu[pedido.nome]
             total_pedido = preco_unitario * pedido.quantidade
             print(f"{pedido.quantidade}x {pedido.nome}: R${total_pedido:.2f}")
             total += total_pedido
         print(f"Total: R${total:.2f}")
+
+    def calcular_total_vendas(self):
+        total_vendas = sum([self.menu[item] * pedido.quantidade for pedido in self.pedidos for item in self.menu])
+        return total_vendas
+
+    def adicionar_novo_item(self, nome, preco):
+        if nome not in self.menu:
+            self.menu[nome] = preco
+            print(f"Novo item '{nome}' adicionado ao menu com sucesso!")
+        else:
+            print("Este item já existe no menu.")
 
 
 # Exemplo de uso:
@@ -43,5 +54,12 @@ restaurante.fazer_pedido("Hamburguer", 2)
 restaurante.fazer_pedido("Batata Frita", 1)
 restaurante.fazer_pedido("Cachorro Quente", 1)  # Item não existente
 
-# Imprimir conta
-restaurante.imprimir_conta()
+# Imprimir fatura
+restaurante.imprimir_fatura()
+
+# Calcular total de vendas
+total_vendas = restaurante.calcular_total_vendas()
+print(f"Total de vendas: R${total_vendas:.2f}")
+
+# Adicionar novo item ao menu
+restaurante.adicionar_novo_item("Cachorro Quente", 7)
